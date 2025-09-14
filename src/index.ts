@@ -2,11 +2,16 @@ export type {
   Module,
   ModuloConfig,
   RegisteredModule,
+  NavigationItem,
   ModuleStatus,
   ModuleEvent,
   ModuleVersion,
   ModuleDependency,
-  ModuleError
+  ModuleError,
+  ModuleStatusInfo,
+  Permission,
+  RouteDefinition,
+  ModuleRegistryState
 } from './types/module';
 
 export { ModuleInitializer } from './core/initializer';
