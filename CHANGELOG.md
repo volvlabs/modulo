@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/volvlabs/modulo/compare/v1.0.0...v1.0.1) (2025-09-14)
+
+
+### Bug Fixes
+
+* expose types ([689f2f2](https://github.com/volvlabs/modulo/commit/689f2f2a5acd276f46fcd616b81ead0374389ddf))
+
 # 1.0.0 (2025-09-14)
 
 
