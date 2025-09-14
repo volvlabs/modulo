@@ -3,6 +3,5 @@ node_modules
 yarn.lock
 yarn-error.log
 coverage
-package-lock.json
 .DS_Store
 .qodo
