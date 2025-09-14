@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import type { DashboardModule } from '../types/module';
+import type { Module } from '../types/module';
 import { useModuleRegistry } from './registry';
 
 interface ModuleInitializerProps {
-  modules: DashboardModule[];
+  modules: Module[];
   children: React.ReactNode;
   onError?: (error: Error) => void;
   onInitialized?: () => void;

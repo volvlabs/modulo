@@ -1,8 +1,6 @@
 import React, { RefAttributes, type ComponentType } from 'react';
-import { IconType } from 'react-icons';
 
-// Type for any valid React component that can be used as an icon
-type AnyIcon = ComponentType<IconType | SVGElement | RefAttributes<SVGSVGElement> | JSX.Element>;
+type AnyIcon = ComponentType<React.ReactNode | SVGElement | RefAttributes<SVGSVGElement>>;
 
 export interface RouteDefinition {
   path: string;
@@ -27,29 +25,26 @@ export interface Permission {
   description: string;
 }
 
-export interface DashboardModule {
+export interface Module {
   moduleId: string;
   name: string;
-  version: string; // Semver format
+  version: string;
   description: string;
   dependencies?: ModuleDependency[];
   
-  // Module lifecycle methods
   initialize?: () => Promise<void> | void;
   cleanup?: () => Promise<void> | void;
   
-  // Module content methods
   getRoutes: () => RouteDefinition[];
   getNavigation: () => NavigationItem[];
   getPermissions: () => Permission[];
   
-  // Module state and config
   getInitialState?: () => Record<string, unknown>;
   getConfig?: () => Record<string, unknown>;
 }
 
 export interface RegisteredModule {
-  module: DashboardModule;
+  module: Module;
   isEnabled: boolean;
 }
 
@@ -67,12 +62,12 @@ export interface ModuleError {
 }
 
 export type ModuleStatus = 
-  | 'registered'    // Initial state when module is registered
-  | 'initializing'  // Module is currently running initialize()
-  | 'initialized'   // Module has completed initialization
-  | 'error'         // Module encountered an error
-  | 'disabled'      // Module is manually disabled
-  | 'dependency_error'; // Module has unmet dependencies
+  | 'registered'
+  | 'initializing' 
+  | 'initialized'  
+  | 'error'        
+  | 'disabled'     
+  | 'dependency_error';
 
 export interface ModuleStatusInfo {
   status: ModuleStatus;
@@ -88,7 +83,7 @@ export interface ModuleVersion {
 
 export interface ModuleDependency {
   moduleId: string;
-  version: string; // Semver range
+  version: string;
   optional?: boolean;
 }
 
@@ -99,8 +94,8 @@ export interface ModuleEvent {
   timestamp: number;
 }
 
-export interface DashboardConfig {
-  modules: DashboardModule[];
+export interface ModuloConfig {
+  modules: Module[];
   onModuleError?: (moduleId: string, error: Error) => void;
   onModuleInitialized?: (moduleId: string) => void;
 }

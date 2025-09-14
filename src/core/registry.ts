@@ -1,18 +1,19 @@
 import { create, StateCreator } from 'zustand';
 import { persist, PersistOptions } from 'zustand/middleware';
 import { StoreApi } from 'zustand/vanilla';
-import type {
-  DashboardModule,
+import type { 
+  Module, 
+  ModuleRegistryState, 
+  ModuleError,
+  ModuleDependency,
   RegisteredModule,
-  ModuleRegistryState,
-  ModuleStatus,
   ModuleStatusInfo,
-  ModuleError
+  ModuleStatus
 } from '../types/module';
 import { checkDependencyCompatibility } from './version';
 
 // Keep track of registered modules
-const registeredModules = new Map<string, DashboardModule>();
+const registeredModules = new Map<string, Module>();
 
 // Get a registered module instance
 export function getRegisteredModule(moduleId: string) {
@@ -20,7 +21,7 @@ export function getRegisteredModule(moduleId: string) {
 }
 
 type ModuleRegistryStore = ModuleRegistryState & {
-  registerModule: (module: DashboardModule) => Promise<void>;
+  registerModule: (module: Module) => Promise<void>;
   unregisterModule: (moduleId: string) => Promise<void>;
   enableModule: (moduleId: string) => void;
   disableModule: (moduleId: string) => void;
@@ -46,11 +47,10 @@ export const useModuleRegistry = create(
         state: {} as Record<string, Record<string, unknown>>,
         config: {} as Record<string, Record<string, unknown>>,
 
-        registerModule: async (module: DashboardModule) => {
+        registerModule: async (module: Module) => {
           try {
-            // Check dependencies first
             if (module.dependencies) {
-              const deps = module.dependencies.reduce((acc: Record<string, string>, dep: { moduleId: string; version: string; optional?: boolean }) => {
+              const deps = module.dependencies.reduce((acc: Record<string, string>, dep: ModuleDependency) => {
                 const targetModule = get().modules[dep.moduleId];
                 if (!targetModule) {
                   if (!dep.optional) {
@@ -87,7 +87,6 @@ export const useModuleRegistry = create(
               }
             }
 
-            // Set initializing status
             set((state: ModuleRegistryState) => ({
               ...state,
               status: {
@@ -99,19 +98,14 @@ export const useModuleRegistry = create(
               }
             }));
 
-            // Initialize module
             if (module.initialize) {
               await module.initialize();
             }
-
-            // Set up initial state and config
             const initialState = module.getInitialState?.() || {};
             const initialConfig = module.getConfig?.() || {};
 
-            // Store module in registry
             registeredModules.set(module.moduleId, module);
 
-            // Update module status, state, and add to modules with isEnabled: true
             set((state: ModuleRegistryState) => ({
               ...state,
               modules: {
@@ -259,7 +253,7 @@ export const useModuleRegistry = create(
         },
       }),
     {
-      name: 'nebular-module-registry',
+      name: 'modules-registry',
       version: 1,
     }
   )

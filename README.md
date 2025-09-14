@@ -1,19 +1,19 @@
-# @nebularcore/dashboard
+# @volvlabs/modulo
 
-Core dashboard functionality for NebularCore projects. This package provides the foundation for building modular, extensible dashboard applications.
+Core functionality for building modular, extensible applications.
 
 ## Installation
 
 ```bash
-npm install @nebularcore/dashboard
+npm install @volvlabs/modulo
 ```
 
 ## Quick Start
 
 ```typescript
-import { createDashboard } from '@nebularcore/dashboard';
+import { createModulo } from '@volvlabs/modulo';
 
-const { DashboardRoot } = createDashboard({
+const { ModuloRoot } = createModulo({
   api: {
     baseUrl: import.meta.env.VITE_API_URL
   }
@@ -31,12 +31,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
 ## Creating Custom Modules
 
-Create a class that implements the `DashboardModule` interface:
+Create a class that implements the `Module` interface:
 
 ```typescript
-import type { DashboardModule } from '@nebularcore/dashboard';
+import type { Module } from '@volvlabs/modulo';
 
-export class CustomModule implements DashboardModule {
+export class CustomModule implements Module {
   moduleId = 'custom-module';
   name = 'Custom Module';
   version = '1.0.0';
@@ -153,10 +153,10 @@ const dataUpdateEvents = useModuleEventsByType('data-updated');
 Each module can have its own state container:
 
 ```typescript
-import { useModuleState, useModuleConfig } from '@nebularcore/dashboard';
+import { useModuleState, useModuleConfig } from '@volvlabs/modulo';
 
 // In your module implementation
-export class CustomModule implements DashboardModule {
+export class CustomModule implements Module {
   // ...
   
   getInitialState() {
@@ -190,10 +190,10 @@ function CustomComponent() {
 
 ## Configuration
 
-The dashboard can be configured with various options:
+The modulo can be configured with various options:
 
 ```typescript
-const { DashboardRoot } = createDashboard({
+const { Modulo } = createModulo({
   // Required: List of modules to load
   modules: [RBACModule, CustomModule],
   

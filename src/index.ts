@@ -1,33 +1,29 @@
-// Export types
 export type {
-  DashboardModule,
-  DashboardConfig,
-  NavigationItem,
-  Permission,
-  RouteDefinition,
+  Module,
+  ModuloConfig,
   RegisteredModule,
   ModuleStatus,
-  ModuleEvent
+  ModuleEvent,
+  ModuleVersion,
+  ModuleDependency,
+  ModuleError
 } from './types/module';
 
-// Export module system
-export { ModuleInitializer } from './module-system/initializer';
-export { useModuleRegistry } from './module-system/registry';
+export { ModuleInitializer } from './core/initializer';
+export { useModuleRegistry } from './core/registry';
 export {
   useModule,
   useModuleNavigation,
   useModulePermissions,
   useModuleRoutes,
   useModuleStatus
-} from './module-system/hooks';
+} from './core/hooks';
 
-// Export event system
 export {
   useModuleEvents,
   useModuleEventSubscription,
   useModuleEventPublisher,
   useModuleEventsByType
-} from './module-system/module-event-hooks';
+} from './core/module-event-hooks';
 
-// Export create function for bootstrapping
-export { createDashboard } from './create';
+export { createModulo } from './create';

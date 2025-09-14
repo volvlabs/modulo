@@ -20,15 +20,12 @@ export const useModuleEvents = create<ModuleEventStore>((set, get) => ({
       timestamp: Date.now()
     };
 
-    // Add event to history
     set((state) => ({
       events: [...state.events, fullEvent]
     }));
 
-    // Get all listeners for this event type
     const listeners = get().listeners.get(event.type);
     if (listeners) {
-      // Notify all listeners
       listeners.forEach((callback) => {
         try {
           callback(fullEvent);
@@ -46,7 +43,6 @@ export const useModuleEvents = create<ModuleEventStore>((set, get) => ({
     listeners.set(eventType, eventListeners);
     set({ listeners });
 
-    // Return unsubscribe function
     return () => {
       get().unsubscribe(_moduleId, eventType, callback);
     };
